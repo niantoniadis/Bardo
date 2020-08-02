@@ -175,6 +175,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+<<<<<<< HEAD
 © 2020 GitHub, Inc.
 Terms
 Privacy
@@ -187,3 +188,5 @@ API
 Training
 Blog
 About
+=======
+>>>>>>> 00ea7a00fac8a3d89b6b6f99e228303afb19bc7d
