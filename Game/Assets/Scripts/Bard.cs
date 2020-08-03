@@ -7,9 +7,19 @@ public class Bard : Character
     Animator animator;
 
     GameObject guitar;
+    public GameObject guitarBullet;
+
+    Transform gamePosition;
+
+    float guitarShotCoolDown;
+
     // Start is called before the first frame update
     protected override void Start()
     {
+        animator = GetComponent<Animator>();
+
+        guitar = GameObject.FindGameObjectWithTag("Guitar");
+
         maxHealth = 80;
         health = maxHealth;
         speed = 100f;
@@ -20,14 +30,15 @@ public class Bard : Character
 
         friction = 0.85f;
 
-        animator = GetComponent<Animator>();
+        guitarShotCoolDown = 0.5f;
 
-        guitar = GameObject.FindGameObjectWithTag("Guitar");
+        gamePosition = GetComponentInChildren<Transform>();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
+        gamePosition.position += transform.position;
         CalcSteeringForces();
         Movement();
 
@@ -64,6 +75,15 @@ public class Bard : Character
         else
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
+        guitarShotCoolDown -= Time.deltaTime;
+        if (Input.GetMouseButton(0) && guitarShotCoolDown <= 0)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 spawnLocation = (mousePos - new Vector2(transform.position.x, transform.position.y)).normalized + new Vector2(gamePosition.position.x, gamePosition.position.y);
+            Instantiate(guitarBullet, spawnLocation, Quaternion.identity);
+            guitarShotCoolDown = 0.5f;
         }
 
     }
