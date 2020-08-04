@@ -10,6 +10,7 @@ public class Bard : Character
     public GameObject guitarBullet;
 
     Transform gamePosition;
+    Vector2 gamePos;
 
     float guitarShotCoolDown;
 
@@ -37,8 +38,8 @@ public class Bard : Character
 
     // Update is called once per frame
     protected override void Update()
-    {
-        gamePosition.position += transform.position;
+    { 
+        gamePos = gamePosition.position + transform.position;
         CalcSteeringForces();
         Movement();
 
@@ -81,7 +82,7 @@ public class Bard : Character
         if (Input.GetMouseButton(0) && guitarShotCoolDown <= 0)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 spawnLocation = (mousePos - new Vector2(transform.position.x, transform.position.y)).normalized + new Vector2(gamePosition.position.x, gamePosition.position.y);
+            Vector3 spawnLocation = (mousePos - new Vector2(gamePosition.position.x, gamePosition.position.y)).normalized + new Vector2(gamePosition.position.x, gamePosition.position.y);
             Instantiate(guitarBullet, spawnLocation, Quaternion.identity);
             guitarShotCoolDown = 0.5f;
         }

@@ -25,6 +25,10 @@ public class Snarko : Character
     {
         CalcSteeringForces();
         Movement();
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -56,5 +60,13 @@ public class Snarko : Character
         direction.Normalize();
         rotation = Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x);
         transform.rotation = Quaternion.Euler(0,0,rotation);
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == 10)
+        {
+            health -= 5;
+        }
     }
 }

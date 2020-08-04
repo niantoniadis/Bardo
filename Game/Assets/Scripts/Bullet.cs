@@ -15,7 +15,8 @@ public class Bullet : MonoBehaviour
         int index = Mathf.FloorToInt(Random.Range(0.0f, 2.99f));
         GetComponent<SpriteRenderer>().sprite = variants[index];
 
-        direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
+        direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        direction.Normalize();
         speed = 8f;
     }
 
@@ -28,6 +29,9 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+        if (collision.gameObject.layer == 9)
+        {
+            Destroy(gameObject);
+        }
     }
 }
