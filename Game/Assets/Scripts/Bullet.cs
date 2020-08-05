@@ -9,6 +9,16 @@ public class Bullet : MonoBehaviour
 
     Vector2 direction;
     float speed;
+    int damage;
+
+    public int Damage
+    {
+        get
+        {
+            return damage;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     { 
@@ -17,7 +27,12 @@ public class Bullet : MonoBehaviour
 
         direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         direction.Normalize();
+
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.position = (mousePos - new Vector2(transform.position.x, transform.position.y)).normalized + new Vector2(transform.position.x, transform.position.y);
+
         speed = 8f;
+        damage = 5;
     }
 
     // Update is called once per frame
@@ -29,7 +44,8 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 9)
+        Debug.Log(collision.gameObject.layer);
+        if (collision.gameObject.layer != 8)
         {
             Destroy(gameObject);
         }

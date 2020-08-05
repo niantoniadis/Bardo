@@ -6,13 +6,14 @@ public class Snarko : Character
 {
     public Character target;
 
+    bool onScreen;
     // Start is called before the first frame update
     protected override void Start()
     {
         position = transform.position;
-        maxHealth = 15;
+        maxHealth = 25;
         health = maxHealth;
-        speed = 15f;
+        speed = 18f;
         maxSpeed = 7f;
         direction = new Vector2(1, 0);
         rotation = Mathf.Atan2(direction.y, direction.x);
@@ -23,9 +24,14 @@ public class Snarko : Character
 
     protected override void Update()
     {
-        CalcSteeringForces();
-        Movement();
-        if(health <= 0)
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
+        onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        if (onScreen)
+        {
+            CalcSteeringForces();
+            Movement();
+        }
+        if (health <= 0)
         {
             Destroy(gameObject);
         }
@@ -66,7 +72,7 @@ public class Snarko : Character
     {
         if(collision.gameObject.layer == 10)
         {
-            health -= 5;
+            health -= collision.gameObject.GetComponent<Bullet>().Damage;
         }
     }
 }

@@ -81,9 +81,7 @@ public class Bard : Character
         guitarShotCoolDown -= Time.deltaTime;
         if (Input.GetMouseButton(0) && guitarShotCoolDown <= 0)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 spawnLocation = (mousePos - new Vector2(gamePosition.position.x, gamePosition.position.y)).normalized + new Vector2(gamePosition.position.x, gamePosition.position.y);
-            Instantiate(guitarBullet, spawnLocation, Quaternion.identity);
+            Instantiate(guitarBullet, transform.position, Quaternion.identity);
             guitarShotCoolDown = 0.5f;
         }
 

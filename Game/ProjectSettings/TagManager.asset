@@ -43,3 +43,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BG
+    uniqueID: 1140564469
+    locked: 0
+  - name: Players
+    uniqueID: 3026588369
+    locked: 0
+  - name: Enemies
+    uniqueID: 2801899857
+    locked: 0
+  - name: Projectiles
+    uniqueID: 698046639
+    locked: 0
+  - name: FG
+    uniqueID: 3842475315
+    locked: 0

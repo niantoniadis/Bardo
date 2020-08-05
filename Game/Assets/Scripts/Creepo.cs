@@ -6,6 +6,8 @@ public class Creepo : Character
 {
     public Transform target;
 
+    bool onScreen = false;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -23,8 +25,17 @@ public class Creepo : Character
 
     protected override void Update()
     {
-        CalcSteeringForces();
-        Movement();
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
+        onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        if (onScreen)
+        {
+            CalcSteeringForces();
+            Movement();
+        }
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -56,5 +67,13 @@ public class Creepo : Character
         direction.Normalize();
         rotation = Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x);
         transform.rotation = Quaternion.Euler(0,0,rotation);
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            health -= collision.gameObject.GetComponent<Bullet>().Damage;
+        }
     }
 }

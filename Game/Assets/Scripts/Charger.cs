@@ -6,22 +6,26 @@ public class Charger : Character
 {
     public Transform target;
 
+
+    Vector2 forceDirection = Vector2.zero;
     float chargeSpeed;
     float chargeCooldown;
     float chargeTimer;
-    bool posRetirieved;
+    bool posRetrieved;
+    float desiredRotation;
     // Start is called before the first frame update
     protected override void Start()
     {
-        posRetirieved = false;
+        posRetrieved = false;
 
         chargeCooldown = 2.3f;
+        chargeTimer = 1f;
 
         position = transform.position;
-        maxHealth = 15;
+        maxHealth = 60;
         health = maxHealth;
-        speed = 5f;
-        chargeSpeed = 150f;
+        speed = 50f;
+        chargeSpeed = 400f;
         maxSpeed = 7f;
         direction = new Vector2(1, 0);
         rotation = Mathf.Atan2(direction.y, direction.x);
@@ -35,35 +39,55 @@ public class Charger : Character
     {
         CalcSteeringForces();
         Movement();
+        RotateCharacter();
+        if(health < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public override void CalcSteeringForces()
     {
-        Vector2 forceDirection = Vector2.zero;
-
         chargeCooldown -= Time.deltaTime;
         if (chargeCooldown <= 0)
         {
-            if (!posRetirieved) 
+            if (!posRetrieved) 
             {
-                forceDirection = target.position;
-                posRetirieved = true;
+                forceDirection = (target.position - transform.position).normalized;
+                posRetrieved = true;
             }
             ApplyForce(forceDirection * chargeSpeed);
             chargeTimer -= Time.deltaTime;
             if(chargeTimer <= 0)
             {
-                chargeCooldown = Random.Range(1.25f, 3.5f);
-                chargeTimer = chargeCooldown / 4;
-                posRetirieved = false;
+                chargeCooldown = 2.3f;//Random.Range(1.25f, 3.5f);
+                chargeTimer = 1f; //chargeCooldown / 2;
             }
         }
         else
         {
-            forceDirection = target.position;
+            forceDirection = (target.position - transform.position).normalized;
             ApplyForce(forceDirection * speed);
+            posRetrieved = false;
         }
 
-        //ApplyFriction(friction);
+        direction = forceDirection.normalized;
+        //desiredRotation = Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x);
+        rotation = Mathf.Rad2Deg * Mathf.Atan2(velocity.y, velocity.x);
+
+        ApplyFriction(friction);
+    }
+
+    public override void RotateCharacter()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            health -= collision.gameObject.GetComponent<Bullet>().Damage;
+        }
     }
 }
