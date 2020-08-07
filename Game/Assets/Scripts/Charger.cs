@@ -89,5 +89,9 @@ public class Charger : Character
         {
             health -= collision.gameObject.GetComponent<Bullet>().Damage;
         }
+        if (collision.gameObject.layer == 13)
+        {
+            ApplyForce((transform.position - collision.collider.bounds.center).normalized * (velocity.sqrMagnitude / 2));
+        }
     }
 }

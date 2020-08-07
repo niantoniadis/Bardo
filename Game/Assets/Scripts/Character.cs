@@ -49,10 +49,10 @@ public abstract class Character : MonoBehaviour
     {
         CalcSteeringForces();
         Movement();
-        if (boundsTimer >= 0)
-        {
-            boundsTimer -= Time.deltaTime;
-        }
+        //if (boundsTimer >= 0)
+        //{
+        //    boundsTimer -= Time.deltaTime;
+        //}
     }
 
     public Vector2 Direction
@@ -144,7 +144,7 @@ public abstract class Character : MonoBehaviour
 
     public Vector2 Pursue(Character target)
     {
-        Vector2 pos = target.position + target.velocity.normalized * 8;
+        Vector2 pos = target.position + target.velocity.normalized * 5f;
         Vector2 playerDist = position - target.position;
         return Seek(pos);
     }

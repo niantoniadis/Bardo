@@ -20,7 +20,7 @@ TagManager:
   - PlayerProjectile
   - EnemyProjectile
   - Projectile
-  - 
+  - Ostacles
   - 
   - 
   - 
@@ -45,6 +45,9 @@ TagManager:
     locked: 0
   - name: BG
     uniqueID: 1140564469
+    locked: 0
+  - name: Obstacles
+    uniqueID: 759770325
     locked: 0
   - name: Players
     uniqueID: 3026588369
