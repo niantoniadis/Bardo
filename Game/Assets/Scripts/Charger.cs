@@ -6,7 +6,7 @@ public class Charger : Character
 {
     public Transform target;
 
-
+    GameObject body;
     Vector2 forceDirection = Vector2.zero;
     float chargeSpeed;
     float chargeCooldown;
@@ -37,6 +37,7 @@ public class Charger : Character
     // Update is called once per frame
     protected override void Update()
     {
+
         CalcSteeringForces();
         Movement();
         RotateCharacter();
@@ -44,6 +45,7 @@ public class Charger : Character
         {
             Destroy(gameObject);
         }
+        Debug.Log(health);
     }
 
     public override void CalcSteeringForces()
@@ -83,7 +85,7 @@ public class Charger : Character
         transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void Collision(Collision collision)
     {
         if (collision.gameObject.layer == 10)
         {
