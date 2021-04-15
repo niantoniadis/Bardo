@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Guitar
   - Projectile
+  - Rooms
+  - SpawnPoint
+  - RoomManager
+  - Chunk
+  - Mouse
   layers:
   - Default
   - TransparentFX
