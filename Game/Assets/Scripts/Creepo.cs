@@ -66,14 +66,14 @@ public class Creepo : Character
         direction = target.position - transform.position;
         direction.Normalize();
         rotation = Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x);
-        transform.rotation = Quaternion.Euler(0,0,rotation);
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 10)
         {
-            health -= collision.gameObject.GetComponent<Bullet>().Damage;
+            health -= collision.gameObject.GetComponent<BulletOld>().Damage;
         }
         if (collision.gameObject.layer == 13)
         {

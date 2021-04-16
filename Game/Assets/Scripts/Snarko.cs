@@ -72,7 +72,7 @@ public class Snarko : Character
     {
         if(collision.gameObject.layer == 10)
         {
-            health -= collision.gameObject.GetComponent<Bullet>().Damage;
+            health -= collision.gameObject.GetComponent<BulletOld>().Damage;
         }
         if (collision.gameObject.layer == 13)
         {
