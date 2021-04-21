@@ -14,9 +14,7 @@ public class Bullet : MonoBehaviour
     {
         
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
-        Debug.Log(mousePos.x);
-        Debug.Log(mousePos.y);
-        this.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(mousePos.x, mousePos.y) * 80f);
+        this.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(mousePos.x, mousePos.y) * 120f);
 
     }
 

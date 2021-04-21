@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject player;
+    public float speed = 0.03f;
 
     enum State
     {
@@ -33,23 +34,23 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, player.transform.position.z);
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + speed, player.transform.position.z);
         }
         else if (Input.GetKey(KeyCode.A))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x - 0.5f, player.transform.position.y, player.transform.position.z);
+            player.transform.position = new Vector3(player.transform.position.x - speed, player.transform.position.y, player.transform.position.z);
         }
         else if (Input.GetKey(KeyCode.S))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - speed, player.transform.position.z);
 
         }
         else if (Input.GetKey(KeyCode.D))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x + 0.5f, player.transform.position.y, player.transform.position.z);
+            player.transform.position = new Vector3(player.transform.position.x + speed, player.transform.position.y, player.transform.position.z);
 
         }
         else
