@@ -34,6 +34,7 @@ public abstract class NewEnemy : MonoBehaviour
     public int roomIndex;
     public bool possessed;
     public bool isActive;
+    public bool isPaused;
 
     public Vector2 position;
     public Vector2 velocity;
@@ -51,14 +52,17 @@ public abstract class NewEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!possessed)
+        if (!isPaused)
         {
-            // update code here
-        }
-        else
-        {
-            // other update code here
-            Movement();
+            if (!possessed)
+            {
+                // update code here
+            }
+            else
+            {
+                // other update code here
+                Movement();
+            }
         }
     }
 
