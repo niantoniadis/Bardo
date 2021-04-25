@@ -25,27 +25,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(20);
-        }
+
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
-    }
-
-    void CloseAttack(int targetHealth, int targetDef, string type)
-    {
-        if (type == "Angel")
-        {
-            targetHealth -= (atk - targetDef) * damageToAngel / 10;
-        }
-        else
-        {
-            targetHealth -= (atk - targetDef) * damageToDevil / 10;
-        }
     }
 }
