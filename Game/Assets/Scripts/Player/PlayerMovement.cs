@@ -5,7 +5,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject player;
-    public float speed = 0.03f;
+    public float speed;
+    Vector2 offset;
+    Collider movementBounds;
+
+    public Collider MovementBounds
+    {
+        set
+        {
+            movementBounds = value;
+        }
+    }
 
     enum State
     {
@@ -26,36 +36,46 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //WasdMovement();
+    }
+
+    private void FixedUpdate()
+    {
         WasdMovement();
     }
 
     void WasdMovement()
     {
+        offset = Vector2.zero;
         if (Input.GetKey(KeyCode.W))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + speed, player.transform.position.z);
+            offset += new Vector2(0, 1);
         }
-        else if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x - speed, player.transform.position.y, player.transform.position.z);
+            offset += new Vector2(-1, 0);
         }
-        else if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - speed, player.transform.position.z);
+            offset += new Vector2(0, -1);
 
         }
-        else if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             currentState = State.Move;
-            player.transform.position = new Vector3(player.transform.position.x + speed, player.transform.position.y, player.transform.position.z);
-
+            offset += new Vector2(1, 0);
+        }
+        if(offset == Vector2.zero)
+        {
+            currentState = State.Stand;
         }
         else
         {
-            currentState = State.Stand;
+            offset.Normalize();
+            transform.position += Time.fixedDeltaTime * speed * new Vector3(offset.x, offset.y, 0);
         }
     }
 }

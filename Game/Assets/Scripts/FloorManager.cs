@@ -6,8 +6,13 @@ public class FloorManager : MonoBehaviour
 {
     public GameObject horWallPrefab;
     public GameObject verWallPrefab;
+    public GameObject roomPrefab;
+    public GameObject exitPrefab;
+    public GameObject loadingMessage;
 
     public bool altGen;
+
+    PlayerMovement player;
 
     [SerializeField]
     public List<GameObject> startTiles;
@@ -15,6 +20,7 @@ public class FloorManager : MonoBehaviour
     Chunk currChunk;
 
     RoomTemplates templates;
+    public EnemyTemplates e_templates;
     List<Chunk> allChunks;
     List<GameObject> allWalls;
     float timeSinceAddedChunk = 0f;
@@ -24,6 +30,7 @@ public class FloorManager : MonoBehaviour
 
     bool printed;
     bool satisfactory = false;
+    bool generated = false;
     int minLevel;
     int maxLevel;
 
@@ -81,8 +88,10 @@ public class FloorManager : MonoBehaviour
         allChunks = new List<Chunk>();
         allWalls = new List<GameObject>();
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
-        rootChunk = Instantiate(startTiles[0], new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Chunk>();
+        rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        
     }
 
     private void Update()
@@ -112,7 +121,8 @@ public class FloorManager : MonoBehaviour
                 if (maxLevel == 2 && minLevel == -2)
                 {
                     satisfactory = true;
-                    GenerateBossRooms();
+                    //GenerateBossRooms();
+                    loadingMessage.SetActive(false);
                 }
                 else
                 {
@@ -120,35 +130,13 @@ public class FloorManager : MonoBehaviour
                 }
             }
         }
-
-        //test stuff
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if(!generated)
         {
-            if(currChunk.TopNeighbor != null)
-            {
-                currChunk = currChunk.TopNeighbor;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            if(currChunk.LeftNeighbor != null)
-            {
-                currChunk = currChunk.LeftNeighbor;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (currChunk.BottomNeighbor != null)
-            {
-                currChunk = currChunk.BottomNeighbor;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (currChunk.RightNeighbor != null)
-            {
-                currChunk = currChunk.RightNeighbor;
-            }
+            generated = true;
+            currChunk.GenerateRoom();
+            currChunk.visited = true;
+            currChunk.ActivateColor();
+            transform.position = new Vector3(currChunk.transform.position.x, currChunk.transform.position.y, 0);
         }
     }
 
@@ -169,31 +157,33 @@ public class FloorManager : MonoBehaviour
                 switch (level)
                 {
                     case -2:
-                        allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 1f, 1f);
+                        allChunks[i].SetColor(new Color(1f, 0f, 1f, 1f));
                         break;
                     case -1:
-                        allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f, 1f, 1f);
+                        allChunks[i].SetColor(new Color(1f, 0.5f, 1f, 1f));
                         break;
                     case 0:
-                        allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                        allChunks[i].SetColor(new Color(1f, 1f, 1f, 1f));
                         break;
                     case 1:
-                        allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(0.5f, 1f, 0.5f, 1f);
+                        allChunks[i].SetColor(new Color(0.5f, 1f, 0.5f, 1f));
                         break;
                     case 2:
-                        allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f, 1f);
+                        allChunks[i].SetColor(new Color(0f, 1f, 0f, 1f));
                         break;
                     default:
                         if (level > 0)
                         {
-                            allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f, 0.1f);
+                            allChunks[i].SetColor(new Color(0f, 1f, 0f, 0.1f));
                         }
                         else
                         {
-                            allChunks[i].gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 1f, 0.1f);
+                            allChunks[i].SetColor(new Color(1f, 0f, 1f, 0.1f));
                         }
                         break;
                 }
+
+                allChunks[i].ActivateColor();
 
                 for (int j = 0; j < allChunks.Count; j++)
                 {
@@ -230,22 +220,22 @@ public class FloorManager : MonoBehaviour
         for(int i = 0; i < allChunks.Count; i++)
         {
             Chunk chunk = allChunks[i];
-            if (chunk.RightNeighbor == null || chunk.RightNeighbor.level != chunk.Level)
-            {
+            //if (chunk.RightNeighbor == null || chunk.RightNeighbor.level != chunk.Level)
+            //{
                 allWalls.Add(Instantiate(verWallPrefab, new Vector3(chunk.Pos.x + chunk.Size.x/2, chunk.Pos.y, chunk.transform.position.z), Quaternion.identity));
-            }
-            if (chunk.TopNeighbor == null || chunk.TopNeighbor.Level != chunk.level)
-            {
+            //}
+            //if (chunk.TopNeighbor == null || chunk.TopNeighbor.Level != chunk.level)
+            //{
                 allWalls.Add(Instantiate(horWallPrefab, new Vector3(chunk.Pos.x, chunk.Pos.y + chunk.Size.y / 2, chunk.transform.position.z), Quaternion.identity));
-            }                                                                                                                                                     
-            if (chunk.LeftNeighbor == null || chunk.LeftNeighbor.Level != chunk.level)                                                                            
-            {                                                                                                                                                     
-                allWalls.Add(Instantiate(verWallPrefab, new Vector3(chunk.Pos.x - chunk.Size.x / 2, chunk.Pos.y, chunk.transform.position.z), Quaternion.identity));
-            }                                                                                                                                                     
-            if (chunk.BottomNeighbor == null || chunk.BottomNeighbor.Level != chunk.level)                                                                        
-            {                                                                                                                                                     
+            //}                                                                                                                                                     
+            //if (chunk.LeftNeighbor == null || chunk.LeftNeighbor.Level != chunk.level)                                                                            
+            //{                                                                                                                                                     
+               allWalls.Add(Instantiate(verWallPrefab, new Vector3(chunk.Pos.x - chunk.Size.x / 2, chunk.Pos.y, chunk.transform.position.z), Quaternion.identity));
+            //}                                                                                                                                                     
+            //if (chunk.BottomNeighbor == null || chunk.BottomNeighbor.Level != chunk.level)                                                                        
+            //{                                                                                                                                                     
                 allWalls.Add(Instantiate(horWallPrefab, new Vector3(chunk.Pos.x, chunk.Pos.y - chunk.Size.y / 2, chunk.transform.position.z), Quaternion.identity));
-            }
+            //}
 
             SpriteRenderer chunkRenderer = chunk.GetComponent<SpriteRenderer>();
 
@@ -325,7 +315,7 @@ public class FloorManager : MonoBehaviour
             Destroy(temp);
         }
         allWalls = new List<GameObject>();
-        rootChunk = Instantiate(startTiles[0], new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Chunk>();
+        rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
     }
 
@@ -342,6 +332,7 @@ public class FloorManager : MonoBehaviour
                         if (chunk.GenerateBossRoom())
                         {
                             minLevel = -3;
+                            chunk.SetColor(new Color(1f, 0f, 1f, 0.1f));
                         }
                     }
                     break;
@@ -351,6 +342,7 @@ public class FloorManager : MonoBehaviour
                         if (chunk.GenerateBossRoom())
                         {
                             maxLevel = 3;
+                            chunk.SetColor(new Color(0f, 1f, 0f, 0.1f));
                         }
                     }
                     break;
@@ -361,5 +353,23 @@ public class FloorManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void SwitchRooms(Chunk target)//, Vector2 dir)
+    {
+        currChunk.instance.SetSelfActive(false);
+        currChunk = target;
+        if (currChunk.instance == null)
+        {
+            currChunk.GenerateRoom();
+            currChunk.visited = true;
+            currChunk.ActivateColor();
+        }
+        else
+        {
+            currChunk.instance.SetSelfActive(true);
+        }
+        transform.position = new Vector3(currChunk.transform.position.x, currChunk.transform.position.y, 0);
+        player.transform.position = currChunk.instance.RoomBounds.center;
     }
 }

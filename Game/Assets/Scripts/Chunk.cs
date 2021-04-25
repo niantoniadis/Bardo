@@ -8,15 +8,17 @@ public class Chunk : MonoBehaviour
     public Chunk rightNeighbor = null;
     public Chunk topNeighbor = null;
     public Chunk bottomNeighbor = null;
+
     int index;
     Vector2 pos;
     Vector2 size;
+    Color color;
     public int level;
+    public bool visited;
 
-    RoomTemplates templates;
-    FloorManager manager;
-
-
+    public RoomTemplates templates;
+    public FloorManager manager;
+    public Room instance = null;
 
     private void Start()
     {
@@ -27,32 +29,6 @@ public class Chunk : MonoBehaviour
         manager.AllChunks = temp;
         pos = transform.position;
         size = GetComponent<SpriteRenderer>().bounds.size;
-    }
-
-    //testing if neighbors actually get assigned
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Mouse"))
-        {
-            Debug.Log("---------------------------");
-            Debug.Log(pos);
-            if (rightNeighbor != null)
-                Debug.Log("Right neighbor: " + rightNeighbor.Pos.x + "," + rightNeighbor.Pos.y);
-            else
-                Debug.Log("Right neighbor: null");
-            if (topNeighbor != null)
-                Debug.Log("Top neighbor: " + topNeighbor.Pos.x + ", " + topNeighbor.Pos.y);
-            else
-                Debug.Log("Top neighbor: null");
-            if (leftNeighbor != null)
-                Debug.Log("Left neighbor: " + leftNeighbor.Pos.x + ", " + leftNeighbor.Pos.y);
-            else
-                Debug.Log("Left neighbor: null");
-            if (bottomNeighbor != null)
-                Debug.Log("Bottom neighbor: " + bottomNeighbor.Pos.x + ", " + bottomNeighbor.Pos.y);
-            else
-                Debug.Log("Bottom neighbor: null");     
-        }
     }
 
     public Chunk LeftNeighbor
@@ -131,10 +107,6 @@ public class Chunk : MonoBehaviour
         {
             return pos;
         }
-        set
-        {
-            pos = value;
-        }
     }
 
     public Vector2 Size
@@ -204,4 +176,38 @@ public class Chunk : MonoBehaviour
         }
         return success;
     }
+
+    public void SetColor(Color color)
+    {
+        this.color = color;
+    }
+
+    public void ActivateColor()
+    {
+        if (visited)
+        {
+            foreach (SpriteRenderer sR in GetComponentsInChildren<SpriteRenderer>())
+            {
+                sR.color = color;
+            }
+        }
+        else
+        {
+            foreach (SpriteRenderer sR in GetComponentsInChildren<SpriteRenderer>())
+            {
+                sR.color = new Color(0.1415094f, 0.1415094f, 0.1415094f);
+            }
+        }
+    }
+
+    public void GenerateRoom()
+    {
+        instance = Instantiate(manager.roomPrefab, new Vector3(0,0,0), Quaternion.identity).GetComponent<Room>();
+        instance.info = gameObject.GetComponent<Chunk>();
+        instance.exitPrefab = manager.exitPrefab;
+        instance.GenerateEnemyPattern(manager.e_templates);
+        instance.SetSelfActive(true);
+    }
+
+    
 }

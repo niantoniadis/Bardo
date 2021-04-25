@@ -17,7 +17,7 @@ abstract public class Enemy : Character
         }
     }
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
         position = transform.position;
 
@@ -26,7 +26,7 @@ abstract public class Enemy : Character
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
         if (health <= 0)
         {
