@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    private Vector3 mousePos;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -12,9 +14,13 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
-        this.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(mousePos.x, mousePos.y) * 120f);
+        mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position).normalized;
+        Debug.Log(mousePos);
+    }
+
+    void Update()
+    {
+        this.gameObject.transform.position += new Vector3(mousePos.x * 10f * Time.deltaTime, mousePos.y * 10f * Time.deltaTime, 0);
 
     }
 

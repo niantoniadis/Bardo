@@ -5,12 +5,12 @@ using UnityEngine;
 public class RangeAttack : MonoBehaviour
 {
     public GameObject player;
-    public GameObject bullet;
+    private GameObject bullet;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        bullet = (GameObject)Resources.Load("Bullet");
     }
 
     // Update is called once per frame
