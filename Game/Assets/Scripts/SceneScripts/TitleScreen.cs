@@ -23,7 +23,7 @@ public class TitleScreen : MonoBehaviour
     // loads the game scene
     public void ToPlayScene()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("MainScene");
     }
 
     public void Quit()
