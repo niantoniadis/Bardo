@@ -50,13 +50,32 @@ public abstract class NewEnemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (!isPaused)
         {
-            if (!possessed)
+            if (possessed)
             {
                 // update code here
+                if (Input.GetKey(KeyCode.W))
+                {
+                    position.y += .01f * speed;
+                }
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    position.x -= .01f * speed;
+                }
+
+                if (Input.GetKey(KeyCode.S))
+                {
+                    position.y -= .01f * speed;
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    position.x += .01f * speed;
+                }
             }
             else
             {
@@ -179,10 +198,30 @@ public abstract class NewEnemy : MonoBehaviour
         acceleration = Vector3.zero;
 
         // sets the direction
-        direction = velocity.normalized;
-        transform.forward = direction;
+        //direction = velocity.normalized;
+        //transform.forward = direction;
 
         // formats the position
         transform.position = position;
     }
+
+    /// <summary>
+    /// Makes the player entity attack
+    /// </summary>
+    public abstract void Attack();
+
+    // this goes in entity/room manager or what not
+    //private NewEnemy ClickedEnemy()
+    //{
+    //    // gets the collider
+    //    Collider2D clicked_collider = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+    //    
+    //    // checks if it got a collider
+    //    if (clicked_collider != null)
+    //    {
+    //        // if it got a collider, it returns the cell it got from the click
+    //        return clicked_collider.gameObject.GetComponent<NewEnemy>();
+    //    }
+    //    return null;
+    //}
 }
