@@ -37,6 +37,8 @@ public abstract class NewEnemy : MonoBehaviour
     public bool possessed;
     public bool isActive;
     public bool isPaused;
+    public bool bounces;
+    private bool isColliding;
 
     public Vector2 position;
     public Vector2 velocity;
@@ -52,7 +54,7 @@ public abstract class NewEnemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Update()
+    public void FixedUpdate()
     {
         if (!isPaused)
         {
@@ -62,8 +64,8 @@ public abstract class NewEnemy : MonoBehaviour
             
 
             // sets vectors
-            velocity += acceleration * Time.deltaTime;
-            position += velocity * Time.deltaTime;
+            velocity += acceleration * Time.fixedDeltaTime;
+            position += velocity * Time.fixedDeltaTime;
             acceleration = Vector3.zero;
 
             // sets the direction
@@ -241,6 +243,70 @@ public abstract class NewEnemy : MonoBehaviour
         if (collision.gameObject.GetComponent<Bullet>() != null)
         {
             TakeDamage(playerMovement.player.atk);
+        }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Collider2D collider = collision.collider;
+            isColliding = true;
+            
+            if (collider.bounds.size.x < collider.bounds.size.y)
+            {
+                
+                if (bounces)
+                {
+                    velocity.x = -velocity.x;
+                }
+                else 
+                {
+                    velocity.x = 0;
+                }
+            }
+            else
+            {
+                if (bounces)
+                {
+                    velocity.y = -velocity.y;
+                }
+                else
+                {
+                    velocity.y = 0;
+                }
+                //StartCoroutine(CorrectCollisions(collider));
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            isColliding = false;
+        }
+    }
+
+    IEnumerator CorrectCollisions(Collider2D collider)
+    {
+        while (isColliding)
+        {
+            if (collider.bounds.size.x > collider.bounds.size.y)
+            {
+                if (bounces)
+                {
+                    velocity.y = -velocity.y;
+                }
+                else
+                {
+                    velocity.y = 0;
+                    acceleration.y = 0;
+                }
+            }
+            else
+            {
+                    velocity.x = 0;
+                    acceleration.x = 0;
+            }
+            yield return new WaitForEndOfFrame();
         }
     }
 }

@@ -6576,7 +6576,7 @@ GameObject:
   - component: {fileID: 1272765321289395666}
   m_Layer: 0
   m_Name: B (1)
-  m_TagString: Chunk
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6688,7 +6688,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -16.756927, y: 3.6425037}
+  m_Offset: {x: -16.756927, y: 3.5027392}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6699,7 +6699,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.5227127, y: 23.831608}
+  m_Size: {x: 3.5227127, y: 16.989563}
   m_EdgeRadius: 0
 --- !u!61 &1272765321289395666
 BoxCollider2D:
@@ -6714,7 +6714,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 17.09941, y: 3.6234322}
+  m_Offset: {x: 17.09941, y: 3.514}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6725,7 +6725,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.181058, y: 23.869751}
+  m_Size: {x: 4.181057, y: 16.95422}
   m_EdgeRadius: 0
 --- !u!1 &6021438102222856217
 GameObject:
@@ -46982,6 +46982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   info: {fileID: 0}
+  bullets: []
   exitPrefab: {fileID: 0}
 --- !u!61 &2219507148546616953
 BoxCollider2D:

@@ -140,12 +140,18 @@ public class Room : MonoBehaviour
         if (!completed)
         {
             activeEnemies = new List<NewEnemy>();
-            NewEnemy tempEnemy = Instantiate(templates.eSP_Neutral[0], transform.position, Quaternion.identity).GetComponent<NewEnemy>();
-            // set floor num
-            tempEnemy.playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-            tempEnemy.floor = tempEnemy.playerMovement.player.floorLevel;
-            tempEnemy.SetStats();
-            activeEnemies.Add(tempEnemy);
+            GameObject chosenPattern = Instantiate(templates.eSP_Neutral[Random.Range(0, templates.eSP_Neutral.Count - 1)], transform.position, Quaternion.identity);
+            for (int i = chosenPattern.transform.childCount - 1; i >= 0; i--)
+            {
+                NewEnemy tempEnemy = chosenPattern.transform.GetChild(i).GetComponent<NewEnemy>();
+
+                // set floor num
+                tempEnemy.playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+                tempEnemy.floor = tempEnemy.playerMovement.player.floorLevel;
+                tempEnemy.SetStats();
+                tempEnemy.transform.parent = null;
+                activeEnemies.Add(tempEnemy);
+            }
         }
     }
 

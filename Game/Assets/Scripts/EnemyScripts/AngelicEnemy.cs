@@ -14,9 +14,9 @@ public class AngelicEnemy : NewEnemy
     }
 
     // Update is called once per frame
-    new void Update()
+    new void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
 
         // remove later
         //SetStats();

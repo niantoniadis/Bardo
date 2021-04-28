@@ -12,6 +12,7 @@ TagManager:
   - Chunk
   - Mouse
   - Enemies
+  - Wall
   layers:
   - Default
   - TransparentFX
