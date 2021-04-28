@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        Destroy(this.gameObject, 10f);
+        Destroy(this.gameObject, 2f);
     }
 
     void Start()
@@ -20,12 +20,13 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        this.gameObject.transform.position += new Vector3(mousePos.x * 10f * Time.deltaTime, mousePos.y * 10f * Time.deltaTime, 0);
+        this.gameObject.transform.position += Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0).normalized, 10.0f * Time.deltaTime);
 
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(this.gameObject);
+        if (collision.gameObject.GetComponent<NewEnemy>() != null)
+            Destroy(this.gameObject);
     }
 }

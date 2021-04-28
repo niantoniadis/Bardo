@@ -17,11 +17,12 @@ public class DemonicEnemy : NewEnemy
         base.Update();
 
         // remove later
-        SetStats();
+        //SetStats();
     }
 
     public override void Attack()
     {
 
     }
+
 }

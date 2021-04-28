@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,7 @@ public abstract class NewEnemy : MonoBehaviour
     public PlayerMovement playerMovement;
     public EnemyType eType;
     public BuffType bType;
+    public HealthBar healthBar;
 
     public int damage;
     public int health;
@@ -54,34 +56,22 @@ public abstract class NewEnemy : MonoBehaviour
     {
         if (!isPaused)
         {
-            if (possessed)
-            {
-                // update code here
-                if (Input.GetKey(KeyCode.W))
-                {
-                    position.y += .01f * speed;
-                }
+           
+            // other update code here
+            Movement();
+            
 
-                if (Input.GetKey(KeyCode.A))
-                {
-                    position.x -= .01f * speed;
-                }
+            // sets vectors
+            velocity += acceleration * Time.deltaTime;
+            position += velocity * Time.deltaTime;
+            acceleration = Vector3.zero;
 
-                if (Input.GetKey(KeyCode.S))
-                {
-                    position.y -= .01f * speed;
-                }
+            // sets the direction
+            //direction = velocity.normalized;
+            //transform.forward = direction;
 
-                if (Input.GetKey(KeyCode.D))
-                {
-                    position.x += .01f * speed;
-                }
-            }
-            else
-            {
-                // other update code here
-                Movement();
-            }
+            // formats the position
+            transform.position = position;
         }
     }
 
@@ -92,7 +82,7 @@ public abstract class NewEnemy : MonoBehaviour
     public void SetStats()
     {
         floor = Mathf.Abs(floor);
-        int[] bases = { 3, 1, 1, 20};
+        int[] bases = { 3, 1, 2, 20};
         int[] typeMods = { 0, 0, 0, 0 };
 
         // set the base values not on floor 1
@@ -100,14 +90,14 @@ public abstract class NewEnemy : MonoBehaviour
         {
             bases[0] += 3;
             bases[1] += 2;
-            bases[2] += 1;
+            bases[2] += 2;
             bases[3] += 12;
         }
         else if (floor >= 2)
         {
             bases[0] += 6;
             bases[1] += 4;
-            bases[2] += 2;
+            bases[2] += 4;
             bases[3] += 24;
         }
 
@@ -173,6 +163,8 @@ public abstract class NewEnemy : MonoBehaviour
         defense = bases[1] + typeMods[1];
         speed = bases[2] + typeMods[2];
         health = bases[3] + typeMods[3];
+
+        healthBar.SetMaxHealth(health);
     }
 
     /// <summary>
@@ -181,8 +173,41 @@ public abstract class NewEnemy : MonoBehaviour
     public void Movement()
     {
         // seeks player
-        Vector2 desired = (Vector2)playerMovement.transform.position - position;
+        Vector2 desired = Vector2.zero;
+        
+        if (possessed)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                desired.y += speed;
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                desired.y -= speed;
+            }
+            else
+            {
+                velocity.y = 0;
+            }
 
+            if (Input.GetKey(KeyCode.A))
+            {
+                desired.x -= speed;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                desired.x += speed;
+            }
+            else
+            {
+                velocity.x = 0;
+            }
+        }
+        else
+        {
+            desired = (Vector2)playerMovement.transform.position - position;
+        }
+        
         // gets the desired velocity to seek player
         desired.Normalize();
         desired = desired * speed;
@@ -191,18 +216,6 @@ public abstract class NewEnemy : MonoBehaviour
         
         // adds to acceleration
         acceleration += desired;
-
-        // sets vectors
-        velocity += acceleration * Time.deltaTime;
-        position += velocity * Time.deltaTime;
-        acceleration = Vector3.zero;
-
-        // sets the direction
-        //direction = velocity.normalized;
-        //transform.forward = direction;
-
-        // formats the position
-        transform.position = position;
     }
 
     /// <summary>
@@ -210,18 +223,24 @@ public abstract class NewEnemy : MonoBehaviour
     /// </summary>
     public abstract void Attack();
 
-    // this goes in entity/room manager or what not
-    //private NewEnemy ClickedEnemy()
-    //{
-    //    // gets the collider
-    //    Collider2D clicked_collider = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-    //    
-    //    // checks if it got a collider
-    //    if (clicked_collider != null)
-    //    {
-    //        // if it got a collider, it returns the cell it got from the click
-    //        return clicked_collider.gameObject.GetComponent<NewEnemy>();
-    //    }
-    //    return null;
-    //}
+    /// <summary>
+    /// substracts damage - defense
+    /// </summary>
+    public virtual void TakeDamage(int damage)
+    {
+        if (damage - defense > 0)
+        {
+            health -= damage - defense;
+        }
+
+        healthBar.SetHealth(health);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Bullet>() != null)
+        {
+            TakeDamage(playerMovement.player.atk);
+        }
+    }
 }

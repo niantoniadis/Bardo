@@ -19,7 +19,7 @@ public class AngelicEnemy : NewEnemy
         base.Update();
 
         // remove later
-        SetStats();
+        //SetStats();
     }
 
     public override void Attack()

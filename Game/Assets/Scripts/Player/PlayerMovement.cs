@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public GameObject player;
+    public Player player;
     public float speed;
     Vector2 offset;
     Collider movementBounds;
+    public bool isPossessing;
 
     public Collider MovementBounds
     {
@@ -41,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        WasdMovement();
+        if (!isPossessing)
+        { WasdMovement(); }
     }
 
     void WasdMovement()

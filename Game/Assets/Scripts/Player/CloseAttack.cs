@@ -9,6 +9,7 @@ public class CloseAttack : MonoBehaviour
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayer;
+    public Player player;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,7 @@ public class CloseAttack : MonoBehaviour
         foreach (var enemy in hitEnemies)
         {
             Debug.Log("Hit " + enemy.name);
-            enemy.GetComponent<Player>().TakeDamage(20);
+            enemy.GetComponent<NewEnemy>().TakeDamage(player.atk);
         }
     }
 

@@ -6,6 +6,8 @@ public class Room : MonoBehaviour
 {
     public bool active = false;
     Bounds roomBounds;
+    Player player;
+    float possessionTimer;
     public Bounds RoomBounds
     {
         get
@@ -13,21 +15,56 @@ public class Room : MonoBehaviour
             return roomBounds;
         }
     }
+
+    public List<NewEnemy> Enemies
+    {
+        get { return activeEnemies; }
+    }
+
     bool completed = false;
     public Chunk info;
 
-    List<Player> activeEnemies;
+    public List<GameObject> bullets;
+    List<NewEnemy> activeEnemies;
     public GameObject exitPrefab;
     // Start is called before the first frame update
     void Start()
     {
         roomBounds = GetComponent<BoxCollider2D>().bounds;
+        possessionTimer = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        List<Player> delList = new List<Player>();
+        possessionTimer -= Time.deltaTime;
+
+        // possesion check
+        if (Input.GetKeyDown(KeyCode.Mouse2))
+        {
+            Debug.Log("Attempting possession");
+            NewEnemy temp = ClickedEnemy();
+            if (temp != null && possessionTimer <= 0.0f)
+            {
+                temp.possessed = true;
+                temp.playerMovement.isPossessing = true;
+                possessionTimer = 5f;
+            }
+            else
+            {
+                for (int i = 0; i < activeEnemies.Count; i++)
+                {
+                    if (activeEnemies[i].possessed)
+                    {
+                        activeEnemies[i].possessed = true;
+                        activeEnemies[i].playerMovement.isPossessing = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        List<NewEnemy> delList = new List<NewEnemy>();
         if (active) {
             for (int i = 0; i < activeEnemies.Count; i++)
             {
@@ -35,7 +72,7 @@ public class Room : MonoBehaviour
                 {
                     delList.Add(activeEnemies[i]);
                 }
-                else if (activeEnemies[i].currentHealth <= 0)
+                else if (activeEnemies[i].health <= 0)
                 {
                     delList.Add(activeEnemies[i]);
                 }
@@ -97,8 +134,28 @@ public class Room : MonoBehaviour
     {
         if (!completed)
         {
-            activeEnemies = new List<Player>();
-            activeEnemies.Add(Instantiate(templates.eSP_Neutral[0], transform.position, Quaternion.identity).GetComponent<Player>());
+            activeEnemies = new List<NewEnemy>();
+            NewEnemy tempEnemy = Instantiate(templates.eSP_Neutral[0], transform.position, Quaternion.identity).GetComponent<NewEnemy>();
+            // set floor num
+            tempEnemy.playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+            tempEnemy.floor = tempEnemy.playerMovement.player.floorLevel;
+            tempEnemy.SetStats();
+            activeEnemies.Add(tempEnemy);
         }
+    }
+
+    // this goes in entity/room manager or what not
+    private NewEnemy ClickedEnemy()
+    {
+        // gets the collider
+        Collider2D clicked_collider = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        
+        // checks if it got a collider
+        if (clicked_collider != null)
+        {
+            // if it got a collider, it returns the cell it got from the click
+            return clicked_collider.gameObject.GetComponent<NewEnemy>();
+        }
+        return null;
     }
 }

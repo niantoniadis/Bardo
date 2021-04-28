@@ -317,6 +317,8 @@ public class FloorManager : MonoBehaviour
         allWalls = new List<GameObject>();
         rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
+        player.player.room = currChunk.instance;
+        player.player.floorLevel = currChunk.level;
     }
 
     void GenerateBossRooms()
@@ -371,5 +373,8 @@ public class FloorManager : MonoBehaviour
         }
         transform.position = new Vector3(currChunk.transform.position.x, currChunk.transform.position.y, 0);
         player.transform.position = currChunk.instance.RoomBounds.center;
+        Player temp = player.GetComponent<Player>();
+        temp.room = currChunk.instance;
+        temp.floorLevel = currChunk.Level;
     }
 }
