@@ -8,6 +8,8 @@ public class Room : MonoBehaviour
     Bounds roomBounds;
     Player player;
     float possessionTimer;
+
+
     public Bounds RoomBounds
     {
         get
@@ -37,28 +39,31 @@ public class Room : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        possessionTimer -= Time.deltaTime;
-
-        // possesion check
-        if (Input.GetKeyDown(KeyCode.Mouse2))
+        if (active)
         {
-            Debug.Log("Attempting possession");
-            NewEnemy temp = ClickedEnemy();
-            if (temp != null && possessionTimer <= 0.0f)
+            possessionTimer -= Time.deltaTime;
+
+            // possesion check
+            if (Input.GetKeyDown(KeyCode.Mouse2))
             {
-                temp.possessed = true;
-                temp.playerMovement.isPossessing = true;
-                possessionTimer = 5f;
-            }
-            else
-            {
-                for (int i = 0; i < activeEnemies.Count; i++)
+                Debug.Log("Attempting possession");
+                NewEnemy temp = ClickedEnemy();
+                if (temp != null && possessionTimer <= 0.0f)
                 {
-                    if (activeEnemies[i].possessed)
+                    temp.possessed = true;
+                    temp.playerMovement.isPossessing = true;
+                    possessionTimer = 5f;
+                }
+                else
+                {
+                    for (int i = 0; i < activeEnemies.Count; i++)
                     {
-                        activeEnemies[i].possessed = true;
-                        activeEnemies[i].playerMovement.isPossessing = true;
-                        break;
+                        if (activeEnemies[i].possessed)
+                        {
+                            activeEnemies[i].possessed = true;
+                            activeEnemies[i].playerMovement.isPossessing = true;
+                            break;
+                        }
                     }
                 }
             }

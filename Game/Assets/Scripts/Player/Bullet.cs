@@ -5,11 +5,13 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private Vector3 mousePos;
+    PlayerMovement player;
+    float timeAlive = 0;
 
     // Start is called before the first frame update
     void Awake()
     {
-        Destroy(this.gameObject, 2f);
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -20,8 +22,14 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        this.gameObject.transform.position += Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0).normalized, 10.0f * Time.deltaTime);
+        timeAlive += Time.deltaTime;
+        if (!player.isPaused)
+            this.gameObject.transform.position += Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0).normalized, 10.0f * Time.deltaTime);
 
+        if (timeAlive >= 2.0f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 offset;
     Collider movementBounds;
     public bool isPossessing;
+    public bool isPaused;
 
     public Collider MovementBounds
     {
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         currentState = State.Stand;
+        isPaused = false;
     }
 
     // Update is called once per frame
@@ -42,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isPossessing)
+        if (!isPossessing && !isPaused)
         { WasdMovement(); }
     }
 

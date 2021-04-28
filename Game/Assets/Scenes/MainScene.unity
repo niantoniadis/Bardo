@@ -268,7 +268,7 @@ MonoBehaviour:
   InstructionsButton: {fileID: 537810139}
   ResumeButton: {fileID: 966677834}
   MainMenuButton: {fileID: 1772026856}
-  room: {fileID: 0}
+  player: {fileID: 1759565520}
 --- !u!114 &178479345
 MonoBehaviour:
   m_ObjectHideFlags: 0

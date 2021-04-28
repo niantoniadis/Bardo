@@ -12,8 +12,7 @@ public class PlayScene : MonoBehaviour
     public GameObject InstructionsButton;
     public GameObject ResumeButton;
     public GameObject MainMenuButton;
-
-    public Room room;
+    public Player player;
 
     // Update is called once per frame
     void Update()
@@ -43,10 +42,11 @@ public class PlayScene : MonoBehaviour
         MenuPanel.SetActive(true);
 
         // pause code here
-        room.active = false;
-        for (int i = 0; i < room.Enemies.Count; i++)
+        player.room.active = false;
+        player.GetComponent<PlayerMovement>().isPaused = true;
+        for (int i = 0; i < player.room.Enemies.Count; i++)
         {
-            room.Enemies[i].isPaused = true;
+            player.room.Enemies[i].isPaused = true;
         }
     }
 
@@ -66,10 +66,11 @@ public class PlayScene : MonoBehaviour
         MenuPanel.SetActive(false);
 
         // resume code here
-        room.active = true;
-        for (int i = 0; i < room.Enemies.Count; i++)
+        player.room.active = true;
+        player.GetComponent<PlayerMovement>().isPaused = false;
+        for (int i = 0; i < player.room.Enemies.Count; i++)
         {
-            room.Enemies[i].isPaused = false;
+            player.room.Enemies[i].isPaused = false;
         }
     }
 
