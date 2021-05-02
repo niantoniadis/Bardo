@@ -58,7 +58,6 @@ public abstract class NewEnemy : MonoBehaviour
     {
         if (!isPaused)
         {
-           
             // other update code here
             Movement();
             

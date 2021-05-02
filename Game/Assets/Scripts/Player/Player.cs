@@ -33,7 +33,19 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log("Taken damage called:" + damage);
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<EnemyBullet>() != null)
+        {
+            Debug.Log(collision);
+            TakeDamage(5);
+            Destroy(collision.gameObject);
+        }
     }
 }

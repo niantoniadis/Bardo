@@ -189,10 +189,17 @@ MonoBehaviour:
   possessed: 0
   isActive: 0
   isPaused: 0
+  bounces: 0
   position: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  attackPoint: {fileID: 3200288192408742399}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  attackRange: 1.4
+  thisEnemy: {fileID: 3764718932807495633}
 --- !u!1001 &3200288191905446121
 PrefabInstance:
   m_ObjectHideFlags: 0
