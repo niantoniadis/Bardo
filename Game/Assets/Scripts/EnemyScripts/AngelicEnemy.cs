@@ -23,7 +23,7 @@ public class AngelicEnemy : NewEnemy
             {
                 timeForNextAtk -= Time.deltaTime;
             }
-            else if (timeForNextAtk <= 0f)
+            else if (timeForNextAtk <= 0f && !possessed)
             {
                 Attack();
                 timeForNextAtk = 1f;

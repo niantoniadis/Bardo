@@ -28,7 +28,14 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (room == null)
+        {
+            GameObject r = GameObject.Find("Room(Clone)");
+            if (r != null)
+            {
+                room = r.GetComponent<Room>();
+            }
+        }
     }
 
     public void TakeDamage(int damage)

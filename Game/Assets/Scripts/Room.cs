@@ -60,8 +60,8 @@ public class Room : MonoBehaviour
                     {
                         if (activeEnemies[i].possessed)
                         {
-                            activeEnemies[i].possessed = true;
-                            activeEnemies[i].playerMovement.isPossessing = true;
+                            activeEnemies[i].possessed = false;
+                            activeEnemies[i].playerMovement.isPossessing = false;
                             break;
                         }
                     }
