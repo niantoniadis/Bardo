@@ -140,7 +140,7 @@ public class Room : MonoBehaviour
         if (!completed)
         {
             activeEnemies = new List<NewEnemy>();
-            GameObject chosenPattern = Instantiate(templates.eSP_Neutral[Random.Range(0, templates.eSP_Neutral.Count - 1)], transform.position, Quaternion.identity);
+            GameObject chosenPattern = Instantiate(templates.GetTemplateOfLevel(info.Level), transform.position, Quaternion.identity);
             for (int i = chosenPattern.transform.childCount - 1; i >= 0; i--)
             {
                 NewEnemy tempEnemy = chosenPattern.transform.GetChild(i).GetComponent<NewEnemy>();
