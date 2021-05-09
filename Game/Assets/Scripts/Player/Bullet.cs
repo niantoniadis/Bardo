@@ -17,6 +17,7 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position).normalized;
+        this.transform.up = new Vector3(mousePos.x, mousePos.y);
         Debug.Log(mousePos);
     }
 

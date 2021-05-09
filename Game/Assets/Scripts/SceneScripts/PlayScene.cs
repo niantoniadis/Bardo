@@ -47,6 +47,7 @@ public class PlayScene : MonoBehaviour
         for (int i = 0; i < player.room.Enemies.Count; i++)
         {
             player.room.Enemies[i].isPaused = true;
+            player.isPaused = true;
         }
     }
 
@@ -71,6 +72,7 @@ public class PlayScene : MonoBehaviour
         for (int i = 0; i < player.room.Enemies.Count; i++)
         {
             player.room.Enemies[i].isPaused = false;
+            player.isPaused = false;
         }
     }
 

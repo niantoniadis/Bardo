@@ -12,15 +12,19 @@ public class Player : MonoBehaviour
 
     public int maxHealth = 100;
     public int currentHealth;
+    public bool isPaused;
 
     public int floorLevel;
     public Room room;
 
+    public List<Buff> buffs;
     public HealthBar healthBar;
 
     // Start is called before the first frame update
     void Start()
     {
+        buffs = new List<Buff>();
+        isPaused = false;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
     }
@@ -38,8 +42,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AddBuff(Buff buff)
+    {
+        speed += buff.speedMod;
+        atk += buff.damageMod;
+        def += buff.defenseMod;
+        maxHealth += buff.healthMod;
+        currentHealth += buff.healthMod;
+        healthBar.SetMaxHealth(maxHealth);
+        buffs.Add(buff);
+    }
+
+    public void RemoveBuff(Buff buff)
+    {
+        speed -= buff.speedMod;
+        atk -= buff.damageMod;
+        def -= buff.defenseMod;
+        maxHealth -= buff.healthMod;
+        currentHealth -= buff.healthMod;
+        healthBar.SetMaxHealth(maxHealth);
+        buffs.Remove(buff);
+    }
+
     public void TakeDamage(int damage)
     {
+        
+        if (buffs.Count != 0 && Random.Range(0,10) < 3)
+        {
+            RemoveBuff(buffs[0]);
+            Debug.Log("Removing the first buff");
+        }
         Debug.Log("Taken damage called:" + damage);
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
