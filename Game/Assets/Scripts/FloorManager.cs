@@ -11,6 +11,7 @@ public class FloorManager : MonoBehaviour
     public GameObject loadingMessage;
 
     public bool altGen;
+    public static bool gameStarted = false;
 
     PlayerMovement player;
 
@@ -91,6 +92,7 @@ public class FloorManager : MonoBehaviour
         rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        gameStarted = false;
         
     }
 
@@ -133,7 +135,8 @@ public class FloorManager : MonoBehaviour
         else if(!generated)
         {
             generated = true;
-            currChunk.GenerateRoom();
+            gameStarted = true;
+            currChunk.GenerateFirstRoom();
             currChunk.visited = true;
             currChunk.ActivateColor();
             transform.position = new Vector3(currChunk.transform.position.x, currChunk.transform.position.y, 0);
@@ -376,5 +379,24 @@ public class FloorManager : MonoBehaviour
         Player temp = player.GetComponent<Player>();
         temp.room = currChunk.instance;
         temp.floorLevel = currChunk.Level;
+    }
+
+    public bool PlayerWon()
+    {
+        bool result = true;
+
+        for (int i = 0; i < allChunks.Count; i++)
+        {
+            if (!allChunks[i].instance)
+            {
+                result = false;
+            }
+            else if(!allChunks[i].instance.Completed)
+            {
+                result = false;
+            }
+        }
+
+        return result;
     }
 }

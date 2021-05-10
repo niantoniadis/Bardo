@@ -206,8 +206,20 @@ public class Chunk : MonoBehaviour
         instance.info = gameObject.GetComponent<Chunk>();
         instance.exitPrefab = manager.exitPrefab;
         instance.GenerateEnemyPattern(manager.e_templates);
+        Debug.Log(instance.Enemies.Count);
         instance.SetSelfActive(true);
     }
 
-    
+    public void GenerateFirstRoom()
+    {
+        instance = Instantiate(manager.roomPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Room>();
+        instance.info = gameObject.GetComponent<Chunk>();
+        instance.exitPrefab = manager.exitPrefab;
+        instance.SetSelfActive(true);
+    }
+
+    public bool PlayerWon()
+    {
+        return manager.PlayerWon();
+    }
 }

@@ -24,6 +24,15 @@ public class Room : MonoBehaviour
     }
 
     bool completed = false;
+
+    public bool Completed
+    {
+        get
+        {
+            return completed;
+        }
+    }
+
     public Chunk info;
 
     public List<GameObject> bullets;
@@ -34,6 +43,7 @@ public class Room : MonoBehaviour
     {
         roomBounds = GetComponent<BoxCollider2D>().bounds;
         possessionTimer = 0f;
+        activeEnemies = new List<NewEnemy>();
     }
 
     // Update is called once per frame
@@ -168,5 +178,10 @@ public class Room : MonoBehaviour
             return clicked_collider.gameObject.GetComponent<NewEnemy>();
         }
         return null;
+    }
+
+    public bool PlayerWon()
+    {
+        return info.PlayerWon();
     }
 }

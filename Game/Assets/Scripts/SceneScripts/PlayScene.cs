@@ -12,8 +12,9 @@ public class PlayScene : MonoBehaviour
     public GameObject InstructionsButton;
     public GameObject ResumeButton;
     public GameObject MainMenuButton;
+    public GameObject LoseScreen;
+    public GameObject WinScreen;
     public Player player;
-
     // Update is called once per frame
     void Update()
     {
@@ -32,6 +33,24 @@ public class PlayScene : MonoBehaviour
                 PauseGame();
             }
         }
+        if (FloorManager.gameStarted && !MenuPanel.activeSelf)
+        {
+            if (player.currentHealth <= 0)
+            {
+                LoseGame();
+            }
+            else if (player.room.PlayerWon())
+            {
+                WinGame();
+            }
+        }
+        if (Input.anyKeyDown)
+        {
+            if (WinScreen.activeSelf || LoseScreen.activeSelf)
+            {
+                SceneManager.LoadScene("TitleScene");
+            }
+        }
     }
 
     /// <summary>
@@ -42,12 +61,26 @@ public class PlayScene : MonoBehaviour
         MenuPanel.SetActive(true);
 
         // pause code here
+        Time.timeScale = 0f;
         player.room.active = false;
         player.GetComponent<PlayerMovement>().isPaused = true;
         for (int i = 0; i < player.room.Enemies.Count; i++)
         {
             player.room.Enemies[i].isPaused = true;
         }
+    }
+
+    public void LoseGame()
+    {
+        Time.timeScale = 0f;
+        player.room.active = false;
+        player.GetComponent<PlayerMovement>().isPaused = true;
+        for (int i = 0; i < player.room.Enemies.Count; i++)
+        {
+            player.room.Enemies[i].isPaused = true;
+        }
+
+        LoseScreen.SetActive(true);
     }
 
     /// <summary>
@@ -66,6 +99,7 @@ public class PlayScene : MonoBehaviour
         MenuPanel.SetActive(false);
 
         // resume code here
+        Time.timeScale = 1f;
         player.room.active = true;
         player.GetComponent<PlayerMovement>().isPaused = false;
         for (int i = 0; i < player.room.Enemies.Count; i++)
@@ -96,5 +130,18 @@ public class PlayScene : MonoBehaviour
         ResumeButton.SetActive(true);
         MainMenuButton.SetActive(true);
         InstructionsButton.SetActive(true);
+    }
+
+    public void WinGame()
+    {
+        Time.timeScale = 0f;
+        player.room.active = false;
+        player.GetComponent<PlayerMovement>().isPaused = true;
+        for (int i = 0; i < player.room.Enemies.Count; i++)
+        {
+            player.room.Enemies[i].isPaused = true;
+        }
+
+        WinScreen.SetActive(true);
     }
 }
