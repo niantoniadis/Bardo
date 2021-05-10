@@ -17,9 +17,9 @@ public class RangeAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && player.room != null && !player.isPaused)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && player.room != null)
         {
-            player.room.bullets.Add(Instantiate(bullet, new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z - 5), bullet.transform.localRotation));
+            player.room.bullets.Add(Instantiate(bullet, player.transform.position, Quaternion.identity));
         }
     }
 }

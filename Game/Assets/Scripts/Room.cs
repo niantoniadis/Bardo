@@ -34,7 +34,6 @@ public class Room : MonoBehaviour
     {
         roomBounds = GetComponent<BoxCollider2D>().bounds;
         possessionTimer = 0f;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -54,7 +53,6 @@ public class Room : MonoBehaviour
                     temp.possessed = true;
                     temp.playerMovement.isPossessing = true;
                     possessionTimer = 5f;
-                    player.AddBuff(new Buff(info.level, temp.bType, temp.eType));
                 }
                 else
                 {
@@ -64,7 +62,6 @@ public class Room : MonoBehaviour
                         {
                             activeEnemies[i].possessed = false;
                             activeEnemies[i].playerMovement.isPossessing = false;
-
                             break;
                         }
                     }
@@ -82,11 +79,6 @@ public class Room : MonoBehaviour
                 }
                 else if (activeEnemies[i].health <= 0)
                 {
-                    if (activeEnemies[i].possessed)
-                    {
-                        activeEnemies[i].possessed = false;
-                        activeEnemies[i].playerMovement.isPossessing = false;
-                    }
                     delList.Add(activeEnemies[i]);
                 }
             }

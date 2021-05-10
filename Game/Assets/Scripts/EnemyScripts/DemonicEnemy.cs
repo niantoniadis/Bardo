@@ -21,7 +21,7 @@ public class DemonicEnemy : NewEnemy
 
     void Update()
     {
-        if (!isPaused && !possessed)
+        if (!isPaused)
         {
             if (timeForNextAtk > 0f)
             {

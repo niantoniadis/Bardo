@@ -42,6 +42,6 @@ public class AngelicEnemy : NewEnemy
 
     public override void Attack()
     {
-        Instantiate(bullet, new Vector3(transform.position.x, transform.position.y, transform.position.z - 5), Quaternion.identity);
+        Instantiate(bullet, this.transform.position, Quaternion.identity);
     }
 }
