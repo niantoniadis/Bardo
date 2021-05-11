@@ -16,6 +16,9 @@ public class EnemyBullet : MonoBehaviour
         rb2d = this.GetComponent<Rigidbody2D>();
         moveDirection = (player.transform.position - this.transform.position).normalized * moveSpeed;
         rb2d.velocity = new Vector2(moveDirection.x, moveDirection.y);
+        Vector2 dir = player.transform.position - transform.position;
+        dir.Normalize();
+        transform.eulerAngles = new Vector3(0,0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x));
     }
 
     void Update()

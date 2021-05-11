@@ -8,7 +8,7 @@ public class Room : MonoBehaviour
     Bounds roomBounds;
     Player player;
     float possessionTimer;
-
+    bool enemiesSpawned;
 
     public Bounds RoomBounds
     {
@@ -18,10 +18,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    public List<NewEnemy> Enemies
-    {
-        get { return activeEnemies; }
-    }
+    public List<NewEnemy> Enemies { get; private set; }
 
     bool completed = false;
 
@@ -36,14 +33,18 @@ public class Room : MonoBehaviour
     public Chunk info;
 
     public List<GameObject> bullets;
-    List<NewEnemy> activeEnemies;
     public GameObject exitPrefab;
+
+    private void Awake()
+    {
+        Enemies = new List<NewEnemy>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         roomBounds = GetComponent<BoxCollider2D>().bounds;
         possessionTimer = 0f;
-        activeEnemies = new List<NewEnemy>();
     }
 
     // Update is called once per frame
@@ -66,12 +67,12 @@ public class Room : MonoBehaviour
                 }
                 else
                 {
-                    for (int i = 0; i < activeEnemies.Count; i++)
+                    for (int i = 0; i < Enemies.Count; i++)
                     {
-                        if (activeEnemies[i].possessed)
+                        if (Enemies[i].possessed)
                         {
-                            activeEnemies[i].possessed = false;
-                            activeEnemies[i].playerMovement.isPossessing = false;
+                            Enemies[i].possessed = false;
+                            Enemies[i].playerMovement.isPossessing = false;
                             break;
                         }
                     }
@@ -81,27 +82,30 @@ public class Room : MonoBehaviour
 
         List<NewEnemy> delList = new List<NewEnemy>();
         if (active) {
-            for (int i = 0; i < activeEnemies.Count; i++)
+            for (int i = 0; i < Enemies.Count; i++)
             {
                 if (completed)
                 {
-                    delList.Add(activeEnemies[i]);
+                    delList.Add(Enemies[i]);
                 }
-                else if (activeEnemies[i].health <= 0)
+                else if (Enemies[i].health <= 0)
                 {
-                    delList.Add(activeEnemies[i]);
+                    delList.Add(Enemies[i]);
                 }
             }
 
             for(int i = 0; i < delList.Count; i++)
             {
                 GameObject temp = delList[i].gameObject;
-                activeEnemies.Remove(delList[i]);
+                Enemies.Remove(delList[i]);
                 Destroy(temp);
             }
 
-            if (activeEnemies.Count <= 0 && !completed)
+            if (Enemies.Count <= 0 && !completed && enemiesSpawned)
+            {
+                Debug.Log("On generation: " + Enemies.Count);
                 GenerateExits();
+            }
         }
     }
 
@@ -145,11 +149,18 @@ public class Room : MonoBehaviour
         active = val;
     }
 
+    public void SetFirstActive(bool val)
+    {
+        transform.GetChild(0).gameObject.SetActive(val);
+        active = val;
+        enemiesSpawned = true;
+    }
+
     public void GenerateEnemyPattern(EnemyTemplates templates)
     {
-        if (!completed)
+        if (!enemiesSpawned)
         {
-            activeEnemies = new List<NewEnemy>();
+            Enemies = new List<NewEnemy>();
             GameObject chosenPattern = Instantiate(templates.GetTemplateOfLevel(info.Level), transform.position, Quaternion.identity);
             for (int i = chosenPattern.transform.childCount - 1; i >= 0; i--)
             {
@@ -160,8 +171,10 @@ public class Room : MonoBehaviour
                 tempEnemy.floor = tempEnemy.playerMovement.player.floorLevel;
                 tempEnemy.SetStats();
                 tempEnemy.transform.parent = null;
-                activeEnemies.Add(tempEnemy);
+                Enemies.Add(tempEnemy);
             }
+            enemiesSpawned = true;
+            Debug.Log("On Spawn: " + Enemies.Count);
         }
     }
 

@@ -12,7 +12,7 @@ public class AngelicEnemy : NewEnemy
     {
         eType = EnemyType.Angel;
         bType = BuffType.Health;
-        bullet = (GameObject)Resources.Load("EnemyBullet");
+        bullet = (GameObject)Resources.Load("AngelBullet");
     }
 
     void Update()

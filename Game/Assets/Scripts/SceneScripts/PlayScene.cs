@@ -33,7 +33,7 @@ public class PlayScene : MonoBehaviour
                 PauseGame();
             }
         }
-        if (FloorManager.gameStarted && !MenuPanel.activeSelf)
+        if (!MenuPanel.activeSelf && FloorManager.gameStarted)
         {
             if (player.currentHealth <= 0)
             {

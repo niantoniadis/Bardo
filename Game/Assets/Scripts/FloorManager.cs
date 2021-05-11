@@ -83,6 +83,11 @@ public class FloorManager : MonoBehaviour
             return printed;
         }
     }
+
+    private void Awake()
+    {
+        gameStarted = false;
+    }
     private void Start()
     {
         printed = false;
@@ -92,7 +97,6 @@ public class FloorManager : MonoBehaviour
         rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        gameStarted = false;
         
     }
 
