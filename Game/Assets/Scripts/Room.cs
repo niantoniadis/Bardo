@@ -102,10 +102,7 @@ public class Room : MonoBehaviour
             }
 
             if (Enemies.Count <= 0 && !completed && enemiesSpawned)
-            {
-                Debug.Log("On generation: " + Enemies.Count);
                 GenerateExits();
-            }
         }
     }
 
@@ -161,7 +158,7 @@ public class Room : MonoBehaviour
         if (!enemiesSpawned)
         {
             Enemies = new List<NewEnemy>();
-            GameObject chosenPattern = Instantiate(templates.GetTemplateOfLevel(info.Level), transform.position, Quaternion.identity);
+            GameObject chosenPattern = Instantiate(templates.GetTemplateOfLevel(info.Level));
             for (int i = chosenPattern.transform.childCount - 1; i >= 0; i--)
             {
                 NewEnemy tempEnemy = chosenPattern.transform.GetChild(i).GetComponent<NewEnemy>();
@@ -174,7 +171,6 @@ public class Room : MonoBehaviour
                 Enemies.Add(tempEnemy);
             }
             enemiesSpawned = true;
-            Debug.Log("On Spawn: " + Enemies.Count);
         }
     }
 

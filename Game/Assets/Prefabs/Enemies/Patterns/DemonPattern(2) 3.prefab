@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6908204855280956234}
   m_Layer: 0
-  m_Name: DemonPattern(2)
+  m_Name: DemonPattern(2) 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,12 +52,12 @@ PrefabInstance:
     - target: {fileID: 3200288192819278081, guid: d02a81c0ff815324b91ac2ccaa953b3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.667363
+      value: -6.33
       objectReference: {fileID: 0}
     - target: {fileID: 3200288192819278081, guid: d02a81c0ff815324b91ac2ccaa953b3a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5144515
+      value: -0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3200288192819278081, guid: d02a81c0ff815324b91ac2ccaa953b3a,
         type: 3}
@@ -137,12 +137,12 @@ PrefabInstance:
     - target: {fileID: 3200288192819278081, guid: 39687f85f349440449335678aac4ce9f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.303966
+      value: 6.25
       objectReference: {fileID: 0}
     - target: {fileID: 3200288192819278081, guid: 39687f85f349440449335678aac4ce9f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.792558
+      value: 4.3
       objectReference: {fileID: 0}
     - target: {fileID: 3200288192819278081, guid: 39687f85f349440449335678aac4ce9f,
         type: 3}
