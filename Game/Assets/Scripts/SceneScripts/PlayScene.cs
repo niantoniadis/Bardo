@@ -64,6 +64,7 @@ public class PlayScene : MonoBehaviour
         Time.timeScale = 0f;
         player.room.active = false;
         player.GetComponent<PlayerMovement>().isPaused = true;
+        player.isPaused = true;
         for (int i = 0; i < player.room.Enemies.Count; i++)
         {
             player.room.Enemies[i].isPaused = true;
@@ -102,6 +103,7 @@ public class PlayScene : MonoBehaviour
         Time.timeScale = 1f;
         player.room.active = true;
         player.GetComponent<PlayerMovement>().isPaused = false;
+        player.isPaused = false;
         for (int i = 0; i < player.room.Enemies.Count; i++)
         {
             player.room.Enemies[i].isPaused = false;

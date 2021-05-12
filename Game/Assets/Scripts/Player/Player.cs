@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (buffs.Count != 0 && Random.Range(0, 10) < 3)
+        if (buffs.Count != 0 && Random.Range(0, 10) < 2)
         {
             RemoveBuff(buffs[0]);
             Debug.Log("Removing the first buff");
