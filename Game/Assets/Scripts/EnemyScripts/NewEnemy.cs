@@ -89,10 +89,10 @@ public abstract class NewEnemy : MonoBehaviour
         // set the base values not on floor 1
         if (floor == 1)
         {
-            bases[0] += 3;
-            bases[1] += 2;
-            bases[2] += 2;
-            bases[3] += 12;
+            bases[0] += 3; // atk
+            bases[1] += 2; // def
+            bases[2] += 2; // spd
+            bases[3] += 12; // hp
         }
         else if (floor >= 2)
         {

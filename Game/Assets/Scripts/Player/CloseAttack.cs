@@ -27,7 +27,7 @@ public class CloseAttack : MonoBehaviour
         direction = direction.normalized;
         this.transform.up = direction;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !player.isPaused)
         {
             //Here will trigger the animation for close attack
             Attack();
