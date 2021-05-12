@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DemonicEnemy : NewEnemy
 {
+    public Animator animator;
+
     //EnemyAttack
     public Transform attackPoint;
     public LayerMask playerLayer;
@@ -25,10 +27,12 @@ public class DemonicEnemy : NewEnemy
         {
             if (timeForNextAtk > 0f)
             {
+                animator.SetBool("isAttacking", true);
                 timeForNextAtk -= Time.deltaTime;
             }
             else if (timeForNextAtk <= 0f)
             {
+                animator.SetBool("isAttacking", false);
                 Attack();
                 timeForNextAtk = 2f;
             }
