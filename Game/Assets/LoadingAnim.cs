@@ -29,4 +29,9 @@ public class LoadingAnim : MonoBehaviour
         }
         StartCoroutine(DisplayOverTime());
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

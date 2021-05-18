@@ -87,6 +87,7 @@ public class FloorManager : MonoBehaviour
     private void Awake()
     {
         gameStarted = false;
+        Time.timeScale = 1f;
     }
     private void Start()
     {
@@ -97,7 +98,6 @@ public class FloorManager : MonoBehaviour
         rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        
     }
 
     private void Update()
@@ -302,6 +302,7 @@ public class FloorManager : MonoBehaviour
 
     public void GenerateDungeon()
     {
+        Debug.Log("called");
         timeSinceAddedChunk = 0f;
         iterations = 1;
         printed = false;
@@ -313,6 +314,7 @@ public class FloorManager : MonoBehaviour
             Destroy(temp.gameObject);
         }
         allChunks = new List<Chunk>();
+        Debug.Log("Chunks reset");
 
         size = allWalls.Count;
         for (int i = 0; i < size; i++)
@@ -322,10 +324,13 @@ public class FloorManager : MonoBehaviour
             Destroy(temp);
         }
         allWalls = new List<GameObject>();
+        Debug.Log("walls reset");
+
         rootChunk = Instantiate(startTiles[0], transform.position, Quaternion.identity).GetComponent<Chunk>();
         currChunk = rootChunk;
         player.player.room = currChunk.instance;
         player.player.floorLevel = currChunk.level;
+        Debug.Log("Starts");
     }
 
     void GenerateBossRooms()

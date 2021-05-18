@@ -22,8 +22,10 @@ public class RoomSpawnPoint : MonoBehaviour
     FloorManager manager;
     Chunk parent;
 
+    float waitTime;
+
     int rand;
-    bool spawned = false;
+    public bool spawned = false;
 
     public bool Spawned
     {
@@ -50,12 +52,14 @@ public class RoomSpawnPoint : MonoBehaviour
         parent = transform.parent.gameObject.GetComponent<Chunk>();
 
         Invoke("Spawn", 0.1f);
+        Debug.Log("this");
     }
 
     // Update is called once per frame
 
     private void Update()
     {
+
     }
     void Spawn()
     {
